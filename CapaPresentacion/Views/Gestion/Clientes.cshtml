@@ -1,0 +1,513 @@
+﻿
+@{
+    ViewBag.Title = "Clientes";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<ol class="breadcrumb mb-4 mt-4">
+    <li class="breadcrumb-item"><a href="@Url.Action("Index","Home")">Escritorio</a></li>
+    <li class="breadcrumb-item active">Clientes</li>
+</ol>
+
+<div class="card">
+    <div class="card-header">
+        <i class="fas fa-users me-1"></i> Clientes
+    </div>
+
+    <div class="card-body">
+        <div class="row">
+            <div class="col-12">
+                <button type="button" class="btn btn-success" onclick="abrirModal(null)">Registrar</button>
+            </div>
+        </div>
+
+        <hr />
+
+        <table id="tabla" class="display cell-border" style="width:100%">
+            <thead>
+                <tr>
+                    <th>Compañia</th>
+                    <th>Nombre</th>
+                    <th>Apellido</th>
+                    <th>Provincia</th>
+                    <th>Municipio</th>
+                    <th>Sector</th>
+                    <th>Direccion</th>
+                    <th>Telefono</th>
+                    <th>Tipo Documento</th>
+                    <th>Documento Identidad</th>
+                    <th>Tipo</th>
+                    <th>Estado</th>
+                    <th></th>
+                </tr>
+            </thead>
+            <tbody>
+            </tbody>
+        </table>
+
+    </div>
+</div>
+
+<!-- Modal -->
+<div class="modal fade" id="FormModal" tabindex="-1" aria-labelledby="exampleModalLabel" aria-hidden="true" data-bs-backdrop="static">
+    <div class="modal-dialog">
+        <div class="modal-content">
+            <div class="modal-header bg-dark text-white">
+                <h5 class="modal-title" id="exampleModalLabel">Clientes</h5>
+                <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+            </div>
+            <div class="modal-body g-2">
+
+                <input id="txtid" type="hidden" value="0" />
+
+                <div class="row g-1">
+                    <div class="col-sm-6">
+                        <label class="form-label">Compañía</label>
+                        <select id="cbocompania" class="form-select">
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtnombre" class="form-label">Nombre</label>
+                        <input type="text" class="form-control" id="txtnombre">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtapellido" class="form-label">Apellido</label>
+                        <input type="text" class="form-control" id="txtapellido">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Provincia</label>
+                        <select id="cboprovincia" class="form-select">
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Municipio</label>
+                        <select id="cbomunicipio" class="form-select">
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Sector</label>
+                        <select id="cbosector" class="form-select">
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtdireccion" class="form-label">Direccion</label>
+                        <input type="text" class="form-control" id="txtdireccion">
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txttelefono" class="form-label">Telefono</label>
+                        <input type="text" class="form-control" id="txttelefono">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Tipo Documento</label>
+                        <select id="cbotipodocumento" class="form-select">
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label for="txtdocumentoidentidad" class="form-label">Documento Identidad</label>
+                        <input type="text" class="form-control" id="txtdocumentoidentidad">
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Tipo Cliente</label>
+                        <select id="cbotipocliente" class="form-select">
+                        </select>
+                    </div>
+                    <div class="col-sm-6">
+                        <label class="form-label">Estado</label>
+                        <select id="cboestado" class="form-select">
+                        </select>
+                    </div>
+                </div>
+
+                <!--Mensaje de alerta-->
+                <div class="row mt-2">
+                    <div class="col-12">
+
+                        <div id="mensajeError" class="alert alert-danger" role="alert">
+                            A simple danger alert—check it out!
+                        </div>
+
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-secondary" data-bs-dismiss="modal">Cerrar</button>
+                <button type="button" class="btn btn-primary" onclick="Guardar()">Guardar</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+
+@section scripts{
+    <script>
+
+        var tabladata;
+        var filaSeleccionada;
+
+        tabladata = $("#tabla").DataTable({
+            responsive: true,
+            ordering: false,
+            "ajax": {
+                url: '@Url.Action("ListarClientes", "Gestion")',
+                type: "GET",
+                dataType: "json"
+            },
+            "columns": [
+                {
+                    "data": "oId_Compania", "render": function (data) {
+                        return data.Id_Compania
+                    }
+                },
+                { "data": "Nombre" },
+                { "data": "Apellido" },
+                {
+                    "data": "oId_Provincia", "render": function (data) {
+                        return data.Id_Provincia
+                    }
+                },
+                {
+                    "data": "oId_Municipio", "render": function (data) {
+                        return data.Id_Municipio
+                    }
+                },
+                {
+                    "data": "oId_Sector", "render": function (data) {
+                        return data.Id_Sector
+                    }
+                },
+                { "data": "Direccion" },
+                { "data": "Numero_Telefonico" },
+                {
+                    "data": "oId_Documento", "render": function (data) {
+                        return data.Id_Documento
+                    }
+                },
+                { "data": "Documento_De_Identidad" },
+                {
+                    "data": "oId_Tipo_Cliente", "render": function (data) {
+                        return data.Id_Tipo_Cliente
+                    }
+                },
+                {
+                    "data": "oId_Estado_Cliente", "render": function (data) {
+                        return data.Id_Estado_Cliente
+                    }
+                },
+                {
+                    "defaultContent": '<button type="button" class="btn btn-primary btn-sm btn-editar"><i class="fas fa-pen"></i></button>' +
+                        '<button type="button" class="btn btn-danger btn-sm ms-2 btn-eliminar"><i class="fas fa-trash"></i></button>',
+                    "orderable": false,
+                    "searchable": false,
+                    "width": "90px"
+                }
+            ],
+            "language": {
+                "url": "https://cdn.datatables.net/plug-ins/1.11.3/i18n/es_es.json"
+            }
+
+        });
+
+        jQuery.ajax({
+            url: '@Url.Action("ListarSucursales", "Compania")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $("<option>").attr({ "value": "0","disabled":"true" }).text("Seleccionar").appendTo("#cbocompania");
+                $.each(data.data, function (index, item) {
+                    $("<option>").attr({ "value": item.Id_Compania }).text(item.Nombre_Sucursal).appendTo("#cbocompania");
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+
+        jQuery.ajax({
+            url: '@Url.Action("ListarProvincia", "Gestion")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $("<option>").attr({ "value": "0","disabled":"true" }).text("Seleccionar").appendTo("#cboprovincia");
+                $.each(data.data, function (index, item) {
+                    $("<option>").attr({ "value": item.Id_Provincia }).text(item.Descripcion).appendTo("#cboprovincia");
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+
+        jQuery.ajax({
+            url: '@Url.Action("ListarMunicipio", "Gestion")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $("<option>").attr({ "value": "0","disabled":"true" }).text("Seleccionar").appendTo("#cbomunicipio");
+                $.each(data.data, function (index, item) {
+                    $("<option>").attr({ "value": item.Id_Municipio }).text(item.Descripcion).appendTo("#cbomunicipio");
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+
+        jQuery.ajax({
+            url: '@Url.Action("ListarSector", "Gestion")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $("<option>").attr({ "value": "0", "disabled": "true" }).text("Seleccionar").appendTo("#cbosector");
+                $.each(data.data, function (index, item) {
+                    $("<option>").attr({ "value": item.Id_Sector }).text(item.Descripcion).appendTo("#cbosector");
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+
+        jQuery.ajax({
+            url: '@Url.Action("ListarTiposDocumentos", "Gestion")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $("<option>").attr({ "value": "0","disabled":"true" }).text("Seleccionar").appendTo("#cbotipodocumento");
+                $.each(data.data, function (index, item) {
+                    $("<option>").attr({ "value": item.Id_Documento }).text(item.Descripcion).appendTo("#cbotipodocumento");
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+
+        jQuery.ajax({
+            url: '@Url.Action("ListarTiposClientes", "Gestion")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $("<option>").attr({ "value": "0","disabled":"true" }).text("Seleccionar").appendTo("#cbotipocliente");
+                $.each(data.data, function (index, item) {
+                    $("<option>").attr({ "value": item.Id_Tipo_Cliente }).text(item.Descripcion).appendTo("#cbotipocliente");
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+
+        jQuery.ajax({
+            url: '@Url.Action("ListarEstadoClientes", "Gestion")',
+            type: "GET",
+            data: null,
+            dataType: "json",
+            contentType: "application/json; charset=utf-8",
+            success: function (data) {
+
+                $("<option>").attr({ "value": "0","disabled":"true" }).text("Seleccionar").appendTo("#cboestado");
+                $.each(data.data, function (index, item) {
+                    $("<option>").attr({ "value": item.Id_Estado_Cliente }).text(item.Descripcion).appendTo("#cboestado");
+                })
+            },
+            error: function (error) {
+                console.log(error)
+            }
+        });
+
+        function abrirModal(json) {
+
+            $("#txtid").val(0);
+            $("#cbocompania").val($("#cbocompania option:first").val());
+            $("#txtnombre").val("");
+            $("#txtapellido").val("");
+            $("#cboprovincia").val($("#cboprovincia option:first").val());
+            $("#cbomunicipio").val($("#cbomunicipio option:first").val());
+            $("#cbosector").val($("#cbosector option:first").val());
+            $("#txtdireccion").val("");
+            $("#txttelefono").val("");
+            $("#cbotipodocumento").val($("#cbotipodocumento option:first").val());
+            $("#txtdocumentoidentidad").val("");
+            $("#cbotipocliente").val($("#cbotipocliente option:first").val());
+            $("#cboestado").val($("#cboestado option:first").val());
+
+            $("#mensajeError").hide();
+
+            if (json != null) {
+
+                $("#txtid").val(json.Id_Cliente);
+                $("#cbocompania").val(json.oId_Compania.Id_Compania);
+                $("#txtnombre").val(json.Nombre);
+                $("#txtapellido").val(json.Apellido);
+                $("#cboprovincia").val(json.oId_Provincia.Id_Provincia);
+                $("#cbomunicipio").val(json.oId_Municipio.Id_Municipio);
+                $("#cbosector").val(json.oId_Sector.Id_Sector);
+                $("#txtdireccion").val(json.Direccion);
+                $("#txttelefono").val(json.Numero_Telefonico);
+                $("#cbotipodocumento").val(json.oId_Documento.Id_Documento);
+                $("#txtdocumentoidentidad").val(json.Documento_De_Identidad);
+                $("#cbotipocliente").val(json.oId_Tipo_Cliente.Id_Tipo_Cliente);
+                $("#cboestado").val(json.oId_Estado_Cliente.Id_Estado_Cliente);
+            }
+            $("#FormModal").modal("show");
+        }
+
+        $("#tabla tbody").on("click", '.btn-editar', function () {
+
+            filaSeleccionada = $(this).closest("tr");
+
+            var data = tabladata.row(filaSeleccionada).data();
+
+            abrirModal(data)
+
+        })
+
+        $("#tabla tbody").on("click", '.btn-eliminar', function () {
+
+            var clienteseleccionado = $(this).closest("tr");
+            var data = tabladata.row(clienteseleccionado).data();
+
+            swal({
+                title: "Esta Seguro?",
+                text: "¿Desea eliminar el cliente?",
+                type: "warning",
+                showCancelButton: true,
+                confirmButtonClass: "btn-primary",
+                confirmButtonText: "Si",
+                cancelButtonText: "No",
+                closeOnConfirm: true
+            },
+                function () {
+                    jQuery.ajax({
+                        url: '@Url.Action("EliminarClientes", "Gestion")',
+                        type: "POST",
+                        data: JSON.stringify({ Id_Cliente: data.Id_Cliente }),
+                        dataType: "json",
+                        contentType: "application/json; charset=utf-8",
+                        success: function (data) {
+                            if (data.resultado) {
+                                tabladata.row(clienteseleccionado).remove().draw();
+                            } else {
+                                swal("No se pudo eliminar", data.mensaje, "error")
+                            }
+                        },
+                        error: function (error) {
+                            console.log(error)
+                        }
+                    });
+                });
+            console.log(data);
+        })
+
+        function Guardar() {
+
+            var Clientes = {
+
+                oId_Compania: {
+                    Id_Compania: $("#cbocompania option:selected").val(),
+                    //Nombre_Sucursal: $("#cbocompania option:selected").text()
+                },
+                Id_Cliente: $("#txtid").val(),
+                Nombre: $("#txtnombre").val(),
+                Apellido: $("#txtapellido").val(),
+                oId_Provincia: {
+                    Id_Provincia: $("#cboprovincia option:selected").val(),
+                    //Descripcion: $("#cboprovincia option:selected").text()
+                },
+                oId_Municipio: {
+                    Id_Municipio: $("#cbomunicipio option:selected").val(),
+                    //Descripcion: $("#cbomunicipio option:selected").text()
+                },
+                oId_Sector: {
+                    Id_Sector: $("#cbosector option:selected").val(),
+                    //Descripcion: $("#cbosector option:selected").text()
+                },
+                Direccion: $("#txtdireccion").val(),
+                Numero_Telefonico: $("#txttelefono").val(),
+                oId_Documento: {
+                    Id_Documento: $("#cbotipodocumento option:selected").val(),
+                    //Descripcion: $("#cbotipodocumento option:selected").text()
+                },
+                Documento_De_Identidad: $("#txtdocumentoidentidad").val(),
+                oId_Tipo_Cliente: {
+                    Id_Tipo_Cliente: $("#cbotipocliente option:selected").val(),
+                    //Descripcion: $("#cbotipocliente option:selected").text()
+                },
+                oId_Estado_Cliente: {
+                    Id_Estado_Cliente: $("#cboestado option:selected").val(),
+                    //Descripcion: $("#cboestado option:selected").text()
+                },
+            }
+
+            jQuery.ajax({
+                url: '@Url.Action("GuardarClientes", "Gestion")',
+                type: "POST",
+                data: JSON.stringify({ obj: Clientes }),
+                dataType: "json",
+                contentType: "application/json; charset=utf-8",
+               success: function (data) {
+
+                   $(".modal-body").LoadingOverlay("hide");
+
+                    //NUEVO
+                   if (Clientes.Id_Cliente == 0) {
+                        if (data.resultado != 0) {
+                            Clientes.Id_Cliente = data.resultado
+                            tabladata.row.add(Clientes).draw(false);
+                            $("#FormModal").modal("hide");
+
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+                    //MODIFICAR
+                    else {
+                        if (data.resultado) {
+                            tabladata.row(filaSeleccionada).data(Clientes).draw(false);
+                            filaSeleccionada = null;
+                            $("#FormModal").modal("hide");
+                        } else {
+                            $("#mensajeError").text(data.mensaje);
+                            $("#mensajeError").show();
+                        }
+                    }
+                },
+               error: function (error) {
+                   $(".modal-body").LoadingOverlay("hide");
+                   $("#mensajeError").text("Error Ajax");
+                   $("#mensajeError").show();
+                },
+                beforeSend: function () {
+                    $(".modal-body").LoadingOverlay("show", {
+                        imageResizeFactor: 2,
+                        text: "Cargando...",
+                        size: 14
+                    })
+                }
+            });
+        }
+
+    </script>
+
+
+}

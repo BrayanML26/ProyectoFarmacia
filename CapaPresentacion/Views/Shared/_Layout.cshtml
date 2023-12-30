@@ -1,0 +1,169 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>@ViewBag.Title</title>
+    @Styles.Render("~/Content/css")
+    @*@Scripts.Render("~/bundles/modernizr")*@
+</head>
+<body class="sb-nav-fixed">
+    <nav class="sb-topnav navbar navbar-expand navbar-dark bg-dark">
+        <!-- Navbar Brand-->
+        <a class="navbar-brand ps-3" href="@Url.Action("Index","Home")">PHARMACY</a>
+        <!-- Sidebar Toggle-->
+        <button class="btn btn-link btn-sm order-1 order-lg-0 me-4 me-lg-0" id="sidebarToggle" href="#!"><i class="fas fa-bars"></i></button>
+        <!-- Navbar-->
+        <ul class="navbar-nav ms-auto me-0 me-md-3 my-2 my-md-0">
+            <li class="nav-item dropdown">
+                <a class="nav-link dropdown-toggle" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false"><i class="fas fa-user fa-fw"></i></a>
+                <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdown">
+                    <li><a class="dropdown-item" href="#!">Usuario</a></li>
+                    <li><hr class="dropdown-divider" /></li>
+                    <li><a class="dropdown-item" href="@Url.Action("CerrarSesion","Acceso")">Cerrar Session</a></li>
+                </ul>
+            </li>
+        </ul>
+    </nav>
+    <div id="layoutSidenav">
+        <div id="layoutSidenav_nav">
+            <nav class="sb-sidenav accordion sb-sidenav-dark" id="sidenavAccordion">
+                <div class="sb-sidenav-menu">
+                    <div class="nav">
+                        @*<div class="sb-sidenav-menu-heading">Core</div>*@
+                        <a class="nav-link" href="@Url.Action("Index","Home")">
+                            <div class="sb-nav-link-icon"><i class="fas fa-home"></i></div>
+                            Escritorio
+                        </a>
+                        @*<div class="sb-sidenav-menu-heading">Interface</div>*@
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseGestion" aria-expanded="false" aria-controls="collapseGestion">
+                            <div class="sb-nav-link-icon"><i class="fas fa-database"></i></div>
+                            Gestion
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseGestion" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="@Url.Action("Clientes","Gestion")"><i class="fas fa-users"></i> Clientes</a>
+                                <a class="nav-link" href="@Url.Action("TiposDeClientes","Gestion")"><i class="fas fa-user-tag"></i> Tipos De Clientes</a>
+                                <a class="nav-link" href="@Url.Action("Proveedores","Gestion")"> <i class="fas fa-truck"></i> Proveedores</a>
+                                <a class="nav-link" href="@Url.Action("TiposDeProveedores","Gestion")"><i class="fas fa-building"></i> Tipos De Proveedores</a>
+                                <a class="nav-link" href="@Url.Action("Descuentos","Gestion")"> <i class="fas fa-percent"></i> Descuentos</a>
+                                <a class="nav-link" href="@Url.Action("Ofertas","Gestion")"><i class="fas fa-tags"></i> Ofertas</a>
+                            </nav>
+                        </div>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMovimiento" aria-expanded="false" aria-controls="collapseMovimiento">
+                            <div class="sb-nav-link-icon"><i class="fas fa-arrows-alt"></i></div>
+                            Movimiento
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseMovimiento" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="@Url.Action("Pedidos","Movimiento")"><i class="fas fa-box-open"></i> Pedidos</a>
+                                <a class="nav-link" href="@Url.Action("Ventas","Movimiento")"><i class="fas fa-shopping-cart"></i> Ventas</a>
+                                <a class="nav-link" href="@Url.Action("Compras","Movimiento")"><i class="fas fa-truck"></i> Compras</a>
+                                @*<a class="nav-link" href="@Url.Action("Caja","Movimiento")"><i class="fas fa-cash-register"></i> Caja</a>*@
+                            </nav>
+                        </div>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseCompañia" aria-expanded="false" aria-controls="collapseCompañia">
+                            <div class="sb-nav-link-icon"><i class="fas fa-building"></i></div>
+                            Compañia
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseCompañia" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="@Url.Action("Sucursales","Compania")"><i class="fas fa-store"></i> Sucursales</a>
+                                <a class="nav-link" href="@Url.Action("ComprobantesFiscales","Compania")"><i class="fas fa-receipt"></i> Comprobantes Fisc.</a>
+                            </nav>
+                        </div>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseProductos" aria-expanded="false" aria-controls="collapseProductos">
+                            <div class="sb-nav-link-icon"><i class="fas fa-shopping-bag"></i></div>
+                            Productos
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseProductos" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="@Url.Action("Productos","Productos")"><i class="fas fa-boxes"></i> Productos</a>
+                                <a class="nav-link" href="@Url.Action("Marcas","Productos")"><i class="fas fa-trademark"></i> Marcas</a>
+                                <a class="nav-link" href="@Url.Action("Presentaciones","Productos")"><i class="fas fa-cube"></i> Presentaciones</a>
+                                <a class="nav-link" href="@Url.Action("Sustancias","Productos")"><i class="fas fa-flask"></i> Sustancias</a>
+                                <a class="nav-link" href="@Url.Action("Existencias","Productos")"><i class="fas fa-box-open"></i> Existencias</a>
+                                <a class="nav-link" href="@Url.Action("CambiosDePrecios","Productos")"><i class="fas fa-dollar-sign"></i> Cambios de Precios</a>
+                                <a class="nav-link" href="@Url.Action("CambiosMasivos","Productos")"><i class="fas fa-edit"></i> Cambios Masivos</a>
+                            </nav>
+                        </div>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseSeguridad" aria-expanded="false" aria-controls="collapseSeguridad">
+                            <div class="sb-nav-link-icon"><i class="fas fa-shield-alt"></i></div>
+                            Seguridad
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseSeguridad" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                @*<a class="nav-link" href="@Url.Action("Roles","Seguridad")"><i class="fas fa-users-cog"></i> Roles</a>*@
+                                <a class="nav-link" href="@Url.Action("Usuarios","Seguridad")"><i class="fas fa-users"></i> Usuarios</a>
+                            </nav>
+                        </div>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseMaestro" aria-expanded="false" aria-controls="collapseMaestro">
+                            <div class="sb-nav-link-icon"><i class="fas fa-clipboard-list"></i></div>
+                            Maestro
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseMaestro" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="@Url.Action("Departamentos","Maestro")"><i class="fas fa-building"></i> Departamentos</a>
+                                <a class="nav-link" href="@Url.Action("UnidadCompraVenta","Maestro")"><i class="fas fa-balance-scale"></i> Unidad Compra - Venta</a>
+                                <a class="nav-link" href="@Url.Action("UnidadContenido","Maestro")"><i class="fas fa-box-open"></i> Unidad Contenido</a>
+                            </nav>
+                        </div>
+                        <a class="nav-link collapsed" href="#" data-bs-toggle="collapse" data-bs-target="#collapseAuditoria" aria-expanded="false" aria-controls="collapseAuditoria">
+                            <div class="sb-nav-link-icon"><i class="fas fa-clipboard-check"></i></div>
+                            Auditoria
+                            <div class="sb-sidenav-collapse-arrow"><i class="fas fa-angle-down"></i></div>
+                        </a>
+                        <div class="collapse" id="collapseAuditoria" aria-labelledby="headingOne" data-bs-parent="#sidenavAccordion">
+                            <nav class="sb-sidenav-menu-nested nav">
+                                <a class="nav-link" href="@Url.Action("Transferencias","Auditoria")"><i class="fas fa-exchange-alt"></i> Transferencias</a>
+                            </nav>
+                        </div>
+                    </div>
+                </div>
+                <div class="sb-sidenav-footer">
+                    <div class="small">Logged in as:</div>
+                    PHARMACY
+                </div>
+            </nav>
+        </div>
+        <div id="layoutSidenav_content">
+            <main>
+                <div class="container-fluid px-4">
+                    @RenderBody()
+                </div>
+            </main>
+            <footer class="py-4 bg-light mt-auto">
+                <div class="container-fluid px-4">
+                    <div class="d-flex align-items-center justify-content-between small">
+                        <div class="text-muted">Copyright &copy; Your Website 2023</div>
+                        <div>
+                            <a href="#">Privacy Policy</a>
+                            &middot;
+                            <a href="#">Terms &amp; Conditions</a>
+                        </div>
+                    </div>
+                </div>
+            </footer>
+        </div>
+    </div>
+
+
+
+
+    @*<li>@Html.ActionLink("Home", "Index", "Home")</li>
+        <li>@Html.ActionLink("Acerca de", "About", "Home")</li>
+        <li>@Html.ActionLink("Contacto", "Contact", "Home")</li>*@
+
+    @Scripts.Render("~/bundles/jquery")
+    @Scripts.Render("~/bundles/complementos")
+    @Scripts.Render("~/bundles/bootstrap")
+    @RenderSection("scripts", required: false)
+</body>
+</html>
